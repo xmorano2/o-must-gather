@@ -130,4 +130,7 @@ def node_out(t, ns, res, output, show_type, show_labels):
     sorted_output = sorted(output_nodes, key=lambda x: x[2])
     sorted_output.insert(0, header)
 
-    print(tabulate(sorted_output, tablefmt="jira", headers="firstrow"))
+    if output == 'jira':
+        print(tabulate(sorted_output, tablefmt="jira", headers="firstrow"))
+    else:
+        print(tabulate(sorted_output, tablefmt="simple", headers="firstrow"))

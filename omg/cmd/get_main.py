@@ -86,6 +86,14 @@ def get_main(objects, output, namespace, all_namespaces, show_labels):
                 for cp in res:
                     print(cp["res"]["kind"].lower() + "/" + cp["res"]["metadata"]["name"])
             # Call the respective output function if -o is not set or -o wide
+            elif output == "jira":
+                print ("Jira output is the format")
+                if len(resource_list) > 1:
+                    show_type = True
+                else:
+                    show_type = False
+                getout_func = map_res(r_type)["getout_func"]
+                getout_func(r_type, ns, res, output, show_type, show_labels)
             elif output in [None, "wide"]:
                 # If we displaying more than one resource_type,
                 # we need to display resource_type with the name (type/name)
