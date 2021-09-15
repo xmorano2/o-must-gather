@@ -55,12 +55,12 @@ def node_out(t, ns, res, output, show_type, show_labels):
 
         if re.search ("Ki$", memory):
             memory = memory.strip ("Ki")
-            memory = (int (memory) // 1024 // 1024) 
+            memory = "%.2f" % (int (memory) / 1024 / 1024) 
             memory = str (memory) + ' Gi'
 
         if re.search ("Ki$", ephemeral_storage):
             ephemeral_storage = ephemeral_storage.strip ("Ki")
-            ephemeral_storage = (int (ephemeral_storage) // 1024 // 1024) 
+            ephemeral_storage = "%.2f" % (int (ephemeral_storage) // 1024 // 1024) 
             ephemeral_storage = str (ephemeral_storage) + ' Gi'
 
         osImage = osImage.replace ("Red Hat Enterprise Linux CoreOS", 'CoreOS')
