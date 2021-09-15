@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from tabulate import tabulate
+import re
 
 from omg.common.helper import age, extract_labels
 
@@ -41,10 +42,29 @@ def node_out(t, ns, res, output, show_type, show_labels):
     elif show_labels:
         header = ["NAME", "STATUS", "ROLES", "AGE", "VERSION", "LABELS"]
     else:
-        header = ["NAME", "STATUS", "ROLES", "AGE", "VERSION"]
+        header = ["NAME", "STATUS", "ROLES", "AGE", "VERSION", "vCPU", "MEM", "DISK", "maxPods", "osImage"]
     # pods
     for node in res:
         n = node["res"]
+
+        cpu = n["status"]["capacity"]["cpu"]
+        memory = n["status"]["capacity"]["memory"]
+        ephemeral_storage = n["status"]["capacity"]["ephemeral-storage"]
+        pods = n["status"]["capacity"]["pods"]
+        osImage = n["status"]["nodeInfo"]["osImage"]
+
+        if re.search ("Ki$", memory):
+            memory = memory.strip ("Ki")
+            memory = (int (memory) // 1024 // 1024) 
+            memory = str (memory) + ' Gi'
+
+        if re.search ("Ki$", ephemeral_storage):
+            ephemeral_storage = ephemeral_storage.strip ("Ki")
+            ephemeral_storage = (int (ephemeral_storage) // 1024 // 1024) 
+            ephemeral_storage = str (ephemeral_storage) + ' Gi'
+
+        osImage = osImage.replace ("Red Hat Enterprise Linux CoreOS", 'CoreOS')
+
         row = []
         # name
         if show_type:
@@ -75,6 +95,11 @@ def node_out(t, ns, res, output, show_type, show_labels):
         # version
         ver = n["status"]["nodeInfo"]["kubeletVersion"]
         row.append(ver)
+        row.append (cpu)
+        row.append (memory)
+        row.append (ephemeral_storage)
+        row.append (pods)
+        row.append (osImage)
         if output == "wide":
             # internal/external ip
             i_ip = "<none>"
@@ -105,4 +130,4 @@ def node_out(t, ns, res, output, show_type, show_labels):
     sorted_output = sorted(output_nodes, key=lambda x: x[2])
     sorted_output.insert(0, header)
 
-    print(tabulate(sorted_output, tablefmt="plain"))
+    print(tabulate(sorted_output, tablefmt="jira", headers="firstrow"))
