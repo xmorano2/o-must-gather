@@ -62,4 +62,4 @@ def sc_out(t, ns, res, output, show_type, show_labels):
     # sort by 1st column
     sorted_output = sorted(output_res)
     sorted_output.insert(0, header)
-    print(tabulate(sorted_output, tablefmt="plain"))
+    print(tabulate(sorted_output, tablefmt="jira", headers="firstrow"))
