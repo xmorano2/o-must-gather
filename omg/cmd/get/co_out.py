@@ -62,4 +62,8 @@ def co_out(t, ns, res, output, show_type, show_labels):
 
         output_res.append(row)
 
-    print(tabulate(output_res, tablefmt="plain"))
+    if output == 'jira':
+        print(tabulate(output_res, tablefmt="jira", headers="firstrow"))
+    else:
+        print(tabulate(output_res, tablefmt="plain", headers="firstrow"))
+

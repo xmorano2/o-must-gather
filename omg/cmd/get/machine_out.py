@@ -59,4 +59,8 @@ def machine_out(t, ns, res, output, show_type, show_labels):
     sorted_output = sorted(output_res, key=lambda x: x[ni])
     sorted_output.insert(0, header)
 
-    print(tabulate(sorted_output, tablefmt="plain"))
+    if output == 'jira':
+        print(tabulate(sorted_output, tablefmt="jira", headers="firstrow"))
+    else:
+        print(tabulate(sorted_output, tablefmt="plain", headers="firstrow"))
+
